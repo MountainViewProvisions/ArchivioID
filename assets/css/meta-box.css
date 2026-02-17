@@ -1,0 +1,449 @@
+/**
+ * ArchivioID Meta Box Styles
+ *
+ * Styles for the signature verification meta box in the post editor.
+ *
+ * @package ArchivioID
+ * @since   1.1.0
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Container
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-meta-box {
+	margin: -6px -12px -12px;
+	padding: 12px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Status Badge
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-status-section {
+	margin-bottom: 16px;
+}
+
+.archivio-status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-weight: 500;
+	font-size: 13px;
+	transition: all 0.2s ease;
+}
+
+.archivio-status-icon {
+	font-size: 16px;
+	line-height: 1;
+}
+
+/* Status: Not Signed */
+.archivio-status-not-signed {
+	background: #f0f0f1;
+	color: #646970;
+	border: 1px solid #dcdcde;
+}
+
+/* Status: Uploaded */
+.archivio-status-uploaded {
+	background: #fff8e5;
+	color: #996800;
+	border: 1px solid #f0b849;
+}
+
+/* Status: Verified */
+.archivio-status-verified {
+	background: #d5f4e6;
+	color: #0a7537;
+	border: 1px solid #46b450;
+}
+
+/* Status: Invalid */
+.archivio-status-invalid {
+	background: #fce8e8;
+	color: #a00;
+	border: 1px solid #d73a49;
+}
+
+/* Status: Error */
+.archivio-status-error {
+	background: #fce8e8;
+	color: #a00;
+	border: 1px solid #d73a49;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Backend Info
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-backend-info {
+	margin: 8px 0;
+	padding: 6px 8px;
+	background: #f6f7f7;
+	border-radius: 3px;
+}
+
+.archivio-backend-info small {
+	font-size: 11px;
+	color: #646970;
+}
+
+.archivio-backend-info code {
+	background: #fff;
+	padding: 2px 4px;
+	border-radius: 2px;
+	font-size: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Notices
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-notice {
+	margin: 12px 0;
+	padding: 8px 12px;
+	border-left: 4px solid;
+	border-radius: 3px;
+	background: #fff;
+}
+
+.archivio-notice p {
+	margin: 0;
+	font-size: 13px;
+}
+
+.archivio-notice small {
+	display: block;
+	margin-top: 4px;
+	color: #646970;
+	font-size: 12px;
+}
+
+.archivio-notice-success {
+	border-left-color: #46b450;
+	background: #f0fdf4;
+}
+
+.archivio-notice-error {
+	border-left-color: #d73a49;
+	background: #fef2f2;
+}
+
+.archivio-notice-warning {
+	border-left-color: #f0b849;
+	background: #fffbf0;
+}
+
+.archivio-notice-info {
+	border-left-color: #72aee6;
+	background: #f0f6fc;
+}
+
+.archivio-notice a {
+	color: #2271b1;
+	text-decoration: underline;
+}
+
+.archivio-notice a:hover {
+	color: #135e96;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hash Display
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-hash-section {
+	margin: 12px 0;
+}
+
+.archivio-label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+	color: #1d2327;
+	font-size: 12px;
+}
+
+.archivio-hash-display {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 3px;
+}
+
+.archivio-hash-display code {
+	flex: 1;
+	font-size: 11px;
+	word-break: break-all;
+	color: #1d2327;
+	background: transparent;
+	padding: 0;
+}
+
+.archivio-copy-hash {
+	flex-shrink: 0;
+	font-size: 11px;
+	color: #2271b1;
+	cursor: pointer;
+	transition: color 0.2s;
+}
+
+.archivio-copy-hash:hover {
+	color: #135e96;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Signature Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-signature-section {
+	margin: 12px 0;
+}
+
+.archivio-info-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 8px 0;
+	padding: 6px 8px;
+	background: #f6f7f7;
+	border-radius: 3px;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.archivio-info-row .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	color: #646970;
+}
+
+.archivio-info-success {
+	background: #f0fdf4;
+	color: #0a7537;
+}
+
+.archivio-info-success .dashicons {
+	color: #46b450;
+}
+
+.archivio-info-error {
+	background: #fef2f2;
+	color: #a00;
+}
+
+.archivio-info-error .dashicons {
+	color: #d73a49;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Actions
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 12px 0;
+}
+
+.archivio-actions .button {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.archivio-actions .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+.archivio-actions .spinner {
+	float: none;
+	margin: 0;
+	visibility: hidden;
+}
+
+.archivio-actions .spinner.is-active {
+	visibility: visible;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AJAX Result
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-ajax-result {
+	margin: 12px 0;
+	padding: 10px 12px;
+	border-left: 4px solid;
+	border-radius: 3px;
+	font-size: 13px;
+	animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.archivio-ajax-result .dashicons {
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
+.archivio-ajax-result small {
+	display: block;
+	margin-top: 4px;
+	color: #646970;
+	font-size: 11px;
+}
+
+.archivio-result-success {
+	border-left-color: #46b450;
+	background: #f0fdf4;
+	color: #0a7537;
+}
+
+.archivio-result-warning {
+	border-left-color: #f0b849;
+	background: #fffbf0;
+	color: #996800;
+}
+
+.archivio-result-error {
+	border-left-color: #d73a49;
+	background: #fef2f2;
+	color: #a00;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Upload Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-upload-section {
+	margin: 12px 0;
+}
+
+.archivio-form-group {
+	margin: 12px 0;
+}
+
+.archivio-form-group select,
+.archivio-form-group input[type="file"] {
+	margin-top: 4px;
+}
+
+.archivio-form-group .description {
+	margin-top: 6px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.archivio-upload-instructions {
+	margin: 16px 0;
+	padding: 12px;
+	background: #f0f6fc;
+	border: 1px solid #c3e4ff;
+	border-radius: 4px;
+}
+
+.archivio-upload-instructions strong {
+	color: #1d2327;
+}
+
+.archivio-instructions-list {
+	margin: 8px 0 0 0;
+	padding-left: 20px;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.archivio-instructions-list li {
+	margin: 4px 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Debug Info
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-debug-info {
+	margin-top: 16px;
+	padding-top: 16px;
+	border-top: 1px solid #dcdcde;
+}
+
+.archivio-debug-info details {
+	font-size: 11px;
+}
+
+.archivio-debug-info summary {
+	cursor: pointer;
+	color: #646970;
+	font-weight: 600;
+}
+
+.archivio-debug-info summary:hover {
+	color: #2271b1;
+}
+
+.archivio-debug-info dl {
+	margin: 8px 0 0 0;
+	padding: 8px;
+	background: #f6f7f7;
+	border-radius: 3px;
+}
+
+.archivio-debug-info dt {
+	font-weight: 600;
+	color: #1d2327;
+	margin-top: 6px;
+}
+
+.archivio-debug-info dt:first-child {
+	margin-top: 0;
+}
+
+.archivio-debug-info dd {
+	margin: 2px 0 0 16px;
+	color: #646970;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media screen and (max-width: 782px) {
+	.archivio-meta-box {
+		font-size: 14px;
+	}
+
+	.archivio-status-badge {
+		font-size: 14px;
+	}
+
+	.archivio-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.archivio-actions .button {
+		width: 100%;
+		justify-content: center;
+	}
+}

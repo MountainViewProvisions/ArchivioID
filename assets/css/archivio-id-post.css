@@ -1,0 +1,336 @@
+/**
+ * ArchivioID — Post Editor Meta Box Styles
+ *
+ * Enhanced styling for signature verification meta box in post/page editor.
+ *
+ * @package ArchivioID
+ * @since   1.1.0
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   Meta Box Container
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-metabox {
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Status Badge
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-status-badge {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin-bottom: 12px;
+}
+
+/* Not Signed - Gray */
+.archivio-id-status-not-signed {
+	background: #f0f0f1;
+	color: #50575e;
+	border: 1px solid #8c8f94;
+}
+
+/* Uploaded - Yellow */
+.archivio-id-status-uploaded {
+	background: #fcf8e3;
+	color: #8a6d3b;
+	border: 1px solid #f0ad4e;
+}
+
+/* Verified - Green */
+.archivio-id-status-verified {
+	background: #edfaed;
+	color: #0a7537;
+	border: 1px solid #0a7537;
+}
+
+/* Invalid - Red */
+.archivio-id-status-invalid {
+	background: #fde8e8;
+	color: #d73a49;
+	border: 1px solid #d73a49;
+}
+
+/* Error - Orange */
+.archivio-id-status-error {
+	background: #fff3cd;
+	color: #856404;
+	border: 1px solid #ffc107;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Notices
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-notice {
+	padding: 10px 12px;
+	border-radius: 4px;
+	margin: 10px 0;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.archivio-id-notice-success {
+	background: #edfaed;
+	color: #0a7537;
+	border-left: 4px solid #0a7537;
+}
+
+.archivio-id-notice-warning {
+	background: #fcf8e3;
+	color: #8a6d3b;
+	border-left: 4px solid #f0ad4e;
+}
+
+.archivio-id-notice-error {
+	background: #fde8e8;
+	color: #d73a49;
+	border-left: 4px solid #d73a49;
+}
+
+.archivio-id-notice-info {
+	background: #e7f5fe;
+	color: #0071a1;
+	border-left: 4px solid #00a0d2;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Hash Display
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-hash-display {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 10px;
+	margin: 10px 0;
+	word-break: break-all;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 11px;
+	line-height: 1.6;
+	color: #2c3338;
+}
+
+.archivio-id-hash-label {
+	display: block;
+	font-weight: 600;
+	font-size: 12px;
+	margin-bottom: 6px;
+	color: #1d2327;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   File Upload Section
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-upload-section {
+	margin: 12px 0;
+}
+
+.archivio-id-file-input-wrapper {
+	position: relative;
+	display: inline-block;
+	margin: 8px 0;
+}
+
+.archivio-id-file-input-wrapper input[type="file"] {
+	font-size: 13px;
+	padding: 4px 0;
+}
+
+.archivio-id-file-help {
+	display: block;
+	font-size: 12px;
+	color: #646970;
+	margin-top: 4px;
+	font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Action Buttons
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-actions {
+	margin: 12px 0;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#archivio-id-verify-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+#archivio-id-verify-btn.verifying {
+	opacity: 0.7;
+	cursor: wait;
+}
+
+#archivio-id-delete-sig-btn {
+	color: #d73a49;
+	border-color: #d73a49;
+}
+
+#archivio-id-delete-sig-btn:hover {
+	background: #fde8e8;
+	color: #a82835;
+	border-color: #a82835;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Spinner
+   ═══════════════════════════════════════════════════════════ */
+
+#archivio-id-action-spinner {
+	display: inline-block;
+	visibility: hidden;
+	margin: 0 0 0 8px;
+	vertical-align: middle;
+}
+
+#archivio-id-action-spinner.is-active {
+	visibility: visible;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Verification Result
+   ═══════════════════════════════════════════════════════════ */
+
+#archivio-id-verify-result {
+	margin: 12px 0;
+	padding: 10px 12px;
+	border-radius: 4px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+#archivio-id-verify-result.verified {
+	background: #edfaed;
+	color: #0a7537;
+	border-left: 4px solid #0a7537;
+}
+
+#archivio-id-verify-result.invalid {
+	background: #fde8e8;
+	color: #d73a49;
+	border-left: 4px solid #d73a49;
+}
+
+#archivio-id-verify-result.error {
+	background: #fff3cd;
+	color: #856404;
+	border-left: 4px solid #ffc107;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Key Selector
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-key-selector {
+	margin: 8px 0;
+}
+
+.archivio-id-key-selector label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+	font-size: 12px;
+}
+
+.archivio-id-key-selector select {
+	width: 100%;
+	max-width: 400px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Meta Information
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-meta-info {
+	margin: 8px 0;
+	font-size: 12px;
+	color: #646970;
+}
+
+.archivio-id-meta-info strong {
+	color: #1d2327;
+	font-weight: 600;
+}
+
+.archivio-id-verified-timestamp {
+	color: #0a7537;
+	font-weight: 500;
+}
+
+.archivio-id-backend-info {
+	padding: 8px 10px;
+	background: #f6f7f7;
+	border-radius: 3px;
+	font-size: 11px;
+	color: #646970;
+	margin-top: 8px;
+}
+
+.archivio-id-backend-info code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 2px;
+	font-size: 10px;
+	color: #0a7537;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 782px) {
+	.archivio-id-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	
+	.archivio-id-actions .button {
+		width: 100%;
+		text-align: center;
+	}
+	
+	.archivio-id-key-selector select {
+		max-width: 100%;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════ */
+
+/* Focus styles */
+.archivio-id-metabox .button:focus,
+.archivio-id-key-selector select:focus {
+	outline: 2px solid #0073aa;
+	outline-offset: 2px;
+}
+
+/* Screen reader only text */
+.archivio-id-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}

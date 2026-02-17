@@ -1,0 +1,212 @@
+/**
+ * ArchivioID Front-End Styles
+ *
+ * Styles for signature verification badges displayed on the front-end.
+ *
+ * @package ArchivioID
+ * @since   1.1.0
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Signature Badge Base
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-signature-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	font-size: 14px;
+	line-height: 1;
+	transition: all 0.2s ease;
+	cursor: help;
+	vertical-align: middle;
+	margin-right: 6px;
+}
+
+/* Badge hover effect */
+.archivio-signature-badge:hover {
+	transform: scale(1.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Badge States
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Not Signed - Grey background */
+.archivio-badge-unsigned {
+	background-color: #e5e7eb;
+	border: 1px solid #d1d5db;
+	filter: grayscale(100%);
+	opacity: 0.6;
+}
+
+/* Signature Uploaded - Yellow background */
+.archivio-badge-uploaded {
+	background-color: #fef3c7;
+	border: 1px solid #fbbf24;
+}
+
+/* Verified - Green background */
+.archivio-badge-verified {
+	background-color: #d1fae5;
+	border: 1px solid #10b981;
+}
+
+/* Invalid Signature - Red background */
+.archivio-badge-invalid {
+	background-color: #fee2e2;
+	border: 1px solid #ef4444;
+}
+
+/* Error - Red background */
+.archivio-badge-error {
+	background-color: #fee2e2;
+	border: 1px solid #dc2626;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tooltip Enhancement (Optional)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.archivio-signature-badge::before {
+	content: attr(title);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-8px);
+	padding: 6px 10px;
+	background: #1f2937;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 500;
+	white-space: nowrap;
+	border-radius: 4px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	z-index: 1000;
+}
+
+.archivio-signature-badge::after {
+	content: '';
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 5px solid transparent;
+	border-top-color: #1f2937;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+	z-index: 1000;
+}
+
+.archivio-signature-badge:hover::before,
+.archivio-signature-badge:hover::after {
+	opacity: 1;
+	transform: translateX(-50%) translateY(-4px);
+}
+
+.archivio-signature-badge:hover::after {
+	transform: translateX(-50%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Ensure badge is accessible to screen readers */
+.archivio-signature-badge[aria-label] {
+	position: relative;
+}
+
+/* Focus state for keyboard navigation */
+.archivio-signature-badge:focus {
+	outline: 2px solid #2563eb;
+	outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive Design
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media screen and (max-width: 768px) {
+	.archivio-signature-badge {
+		width: 20px;
+		height: 20px;
+		font-size: 12px;
+		margin-right: 4px;
+	}
+
+	/* Disable tooltip on mobile (use native title attribute instead) */
+	.archivio-signature-badge::before,
+	.archivio-signature-badge::after {
+		display: none;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Dark Mode Support
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-color-scheme: dark) {
+	.archivio-badge-unsigned {
+		background-color: #374151;
+		border-color: #4b5563;
+		opacity: 0.7;
+	}
+
+	.archivio-badge-uploaded {
+		background-color: #451a03;
+		border-color: #f59e0b;
+	}
+
+	.archivio-badge-verified {
+		background-color: #064e3b;
+		border-color: #10b981;
+	}
+
+	.archivio-badge-invalid,
+	.archivio-badge-error {
+		background-color: #7f1d1d;
+		border-color: #dc2626;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Print Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media print {
+	.archivio-signature-badge {
+		width: 18px;
+		height: 18px;
+		font-size: 11px;
+	}
+
+	/* Remove hover effects for print */
+	.archivio-signature-badge::before,
+	.archivio-signature-badge::after {
+		display: none;
+	}
+
+	/* Ensure proper colors in print */
+	.archivio-badge-verified {
+		background-color: #d1fae5 !important;
+		border-color: #10b981 !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	.archivio-badge-invalid,
+	.archivio-badge-error {
+		background-color: #fee2e2 !important;
+		border-color: #ef4444 !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+}

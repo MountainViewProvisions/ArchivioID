@@ -1,0 +1,33 @@
+{
+    "name": "mountainviewprovisions/archivio-id",
+    "description": "OpenPGP detached-signature layer for ArchivioMD WordPress plugin",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "phpseclib/phpseclib": "^3.0"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": false,
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "includes/",
+            "admin/"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"echo 'phpseclib v3 installed successfully for ArchivioID\\n';\""
+        ],
+        "post-update-cmd": [
+            "@php -r \"echo 'phpseclib v3 updated successfully for ArchivioID\\n';\""
+        ]
+    }
+}

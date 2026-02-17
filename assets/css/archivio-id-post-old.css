@@ -1,0 +1,42 @@
+/**
+ * ArchivioID — Post Editor Meta Box Styles
+ */
+
+.archivio-id-metabox { font-size: 13px; }
+
+/* ── Status badges ───────────────────────────────────────────── */
+.archivio-id-status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+.archivio-id-status-not-signed  { background:#f0f0f1; color:#646970;  border:1px solid #8c8f94; }
+.archivio-id-status-uploaded    { background:#e8f0fe; color:#1a56db;  border:1px solid #1a56db; }
+.archivio-id-status-verified    { background:#edfaed; color:#0a7537;  border:1px solid #0a7537; }
+.archivio-id-status-invalid     { background:#fde8e8; color:#d73a49;  border:1px solid #d73a49; }
+.archivio-id-status-error       { background:#fff8e5; color:#a07100;  border:1px solid #dba617; }
+
+/* ── Inline notices ──────────────────────────────────────────── */
+.archivio-id-notice {
+    padding: 8px 12px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+.archivio-id-notice-success { background:#edfaed; border-left:3px solid #0a7537; }
+.archivio-id-notice-error   { background:#fde8e8; border-left:3px solid #d73a49; }
+.archivio-id-notice-warning { background:#fff8e5; border-left:3px solid #dba617; }
+
+/* ── Verify result ───────────────────────────────────────────── */
+#archivio-id-verify-result {
+    padding: 8px 12px;
+    border-radius: 3px;
+    margin-top: 8px;
+    font-size: 12px;
+}
+#archivio-id-verify-result.verified { background:#edfaed; border-left:3px solid #0a7537; }
+#archivio-id-verify-result.invalid  { background:#fde8e8; border-left:3px solid #d73a49; }
+#archivio-id-verify-result.error    { background:#fff8e5; border-left:3px solid #dba617; }

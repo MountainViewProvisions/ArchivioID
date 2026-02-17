@@ -1,0 +1,518 @@
+/**
+ * ArchivioID Audit Log Admin Styles
+ * @since 1.2.0
+ */
+
+.archivio-id-audit-log-page {
+	max-width: 100%;
+}
+
+/* Card Layout */
+.archivio-id-audit-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	margin: 20px 0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.archivio-id-audit-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 20px;
+	border-bottom: 1px solid #c3c4c7;
+	background: #f6f7f7;
+}
+
+.archivio-id-audit-card-header h2 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.archivio-id-audit-card-header .log-count {
+	font-size: 13px;
+	color: #646970;
+	background: #fff;
+	padding: 4px 12px;
+	border-radius: 12px;
+	border: 1px solid #c3c4c7;
+}
+
+.archivio-id-audit-card-body {
+	padding: 20px;
+}
+
+/* Controls Grid */
+.archivio-id-audit-controls {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 20px;
+}
+
+.archivio-id-audit-section {
+	padding: 15px;
+	background: #f6f7f7;
+	border-radius: 4px;
+	border: 1px solid #dcdcde;
+}
+
+.archivio-id-audit-section h3 {
+	margin: 0 0 15px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+/* Form Styles */
+.form-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.form-field {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.form-row label {
+	font-weight: 500;
+	margin: 0;
+}
+
+.form-row .regular-select,
+.form-row .regular-text {
+	max-width: 200px;
+}
+
+.form-row .small-text {
+	width: 60px;
+}
+
+.form-row .description {
+	color: #646970;
+	font-size: 13px;
+}
+
+.form-row button {
+	white-space: nowrap;
+}
+
+.form-row button .dashicons {
+	line-height: 28px;
+	margin-right: 2px;
+}
+
+/* Empty State */
+.archivio-id-audit-empty {
+	text-align: center;
+	padding: 40px 20px;
+	color: #646970;
+}
+
+.archivio-id-audit-empty .dashicons {
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+	opacity: 0.5;
+	margin-bottom: 10px;
+}
+
+.archivio-id-audit-empty p {
+	margin: 10px 0;
+	font-size: 14px;
+}
+
+/* Table Styles */
+.archivio-id-audit-table-wrapper {
+	overflow-x: auto;
+}
+
+.archivio-id-audit-table {
+	margin: 0;
+	border: none;
+}
+
+.archivio-id-audit-table th {
+	font-weight: 600;
+	white-space: nowrap;
+	background: #f6f7f7;
+	border-bottom: 2px solid #c3c4c7;
+	padding: 12px 15px;
+}
+
+.archivio-id-audit-table td {
+	vertical-align: top;
+	padding: 15px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.archivio-id-audit-table tbody tr {
+	transition: background-color 0.15s ease;
+}
+
+.archivio-id-audit-table tbody tr:hover {
+	background-color: #f6f7f7;
+}
+
+.archivio-id-audit-table .column-timestamp {
+	width: 160px;
+	min-width: 140px;
+}
+
+.archivio-id-audit-table .column-post {
+	width: 200px;
+	min-width: 180px;
+}
+
+.archivio-id-audit-table .column-event {
+	width: 100px;
+	text-align: center;
+}
+
+.archivio-id-audit-table .column-status {
+	width: 110px;
+	text-align: center;
+}
+
+.archivio-id-audit-table .column-details {
+	min-width: 280px;
+}
+
+/* Table Content Wrappers */
+.timestamp-wrapper,
+.post-wrapper,
+.details-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.timestamp-wrapper .date {
+	font-size: 14px;
+	color: #1d2327;
+	display: block;
+}
+
+.timestamp-wrapper .time {
+	color: #646970;
+	font-size: 13px;
+	display: block;
+}
+
+.timestamp-wrapper .relative-time {
+	color: #2271b1;
+	font-size: 12px;
+	font-weight: 500;
+	display: block;
+}
+
+.post-wrapper .post-title {
+	font-weight: 500;
+	font-size: 14px;
+	color: #2271b1;
+	display: block;
+	line-height: 1.4;
+}
+
+.post-wrapper .post-title:hover {
+	color: #135e96;
+}
+
+.post-wrapper .post-meta {
+	font-size: 12px;
+	color: #646970;
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+.details-wrapper {
+	gap: 6px;
+}
+
+.detail-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+.detail-label {
+	color: #646970;
+	font-weight: 500;
+	min-width: 70px;
+}
+
+.detail-value {
+	color: #1d2327;
+}
+
+.detail-value.fingerprint {
+	font-family: 'Courier New', monospace;
+	font-size: 11px;
+	background: #f0f0f1;
+	padding: 2px 8px;
+	border-radius: 3px;
+	cursor: help;
+}
+
+/* Badges */
+.event-badge,
+.status-badge {
+	display: inline-block;
+	padding: 5px 12px;
+	border-radius: 12px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+	white-space: nowrap;
+}
+
+.event-badge {
+	background: #f0f0f1;
+	color: #1d2327;
+}
+
+.event-upload {
+	background: #d1ecf1;
+	color: #0c5460;
+}
+
+.event-verify {
+	background: #e7d4f0;
+	color: #5b215f;
+}
+
+.event-delete {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+.status-badge {
+	font-weight: 700;
+}
+
+.status-verified {
+	background: #d1e7dd;
+	color: #0a3622;
+	border: 1px solid #badbcc;
+}
+
+.status-unverified {
+	background: #fff3cd;
+	color: #664d03;
+	border: 1px solid #ffecb5;
+}
+
+.status-invalid,
+.status-error {
+	background: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c2c7;
+}
+
+/* Notes Row */
+.log-notes-row td {
+	padding: 0 !important;
+	background: #f9f9f9;
+}
+
+.log-notes {
+	background: #f0f6fc;
+	padding: 12px 15px;
+	border-left: 3px solid #2271b1;
+	margin: 0;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.log-notes .dashicons {
+	color: #2271b1;
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.log-notes strong {
+	margin-right: 5px;
+	color: #1d2327;
+}
+
+/* Responsive Table for Mobile */
+@media screen and (max-width: 782px) {
+	.archivio-id-audit-table thead {
+		display: none;
+	}
+	
+	.archivio-id-audit-table,
+	.archivio-id-audit-table tbody,
+	.archivio-id-audit-table tr,
+	.archivio-id-audit-table td {
+		display: block;
+		width: 100%;
+	}
+	
+	.archivio-id-audit-table tr {
+		margin-bottom: 20px;
+		border: 1px solid #c3c4c7;
+		border-radius: 4px;
+		overflow: hidden;
+	}
+	
+	.archivio-id-audit-table td {
+		text-align: left;
+		padding: 12px 15px;
+		position: relative;
+		border-bottom: 1px solid #f0f0f1;
+	}
+	
+	.archivio-id-audit-table td:last-child {
+		border-bottom: none;
+	}
+	
+	.archivio-id-audit-table td:before {
+		content: attr(data-colname);
+		font-weight: 600;
+		display: block;
+		margin-bottom: 6px;
+		color: #646970;
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+	
+	.archivio-id-audit-table .column-event,
+	.archivio-id-audit-table .column-status {
+		text-align: left;
+	}
+	
+	.log-notes-row {
+		margin-top: -20px;
+		margin-bottom: 0;
+		border: none !important;
+	}
+}
+
+/* Pagination */
+.tablenav.bottom {
+	padding: 15px 20px;
+	border-top: 1px solid #c3c4c7;
+	background: #f6f7f7;
+}
+
+.tablenav-pages {
+	float: none;
+	text-align: center;
+}
+
+.tablenav-pages .page-numbers {
+	display: inline-flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 5px;
+}
+
+.tablenav-pages .page-numbers li {
+	display: inline-block;
+}
+
+.tablenav-pages a,
+.tablenav-pages span {
+	padding: 5px 10px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	text-decoration: none;
+	color: #2271b1;
+	border-radius: 3px;
+}
+
+.tablenav-pages .current {
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+}
+
+.tablenav-pages a:hover {
+	background: #f6f7f7;
+}
+
+/* Info Card */
+.archivio-id-info-card .archivio-id-audit-card-body {
+	background: #f0f6fc;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.info-item {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+}
+
+.info-item .dashicons {
+	font-size: 24px;
+	width: 24px;
+	height: 24px;
+	color: #2271b1;
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.info-item strong {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.info-item p {
+	margin: 0;
+	font-size: 13px;
+	color: #646970;
+	line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.archivio-id-audit-controls {
+		grid-template-columns: 1fr;
+	}
+	
+	.form-row {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	
+	.form-row .regular-select,
+	.form-row .regular-text {
+		max-width: 100%;
+	}
+	
+	.form-field {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	
+	.archivio-id-audit-card-header {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 10px;
+	}
+	
+	.info-grid {
+		grid-template-columns: 1fr;
+	}
+}
+

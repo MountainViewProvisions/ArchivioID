@@ -1,0 +1,353 @@
+/**
+ * ArchivioID — Front-End Badge Styles
+ *
+ * Responsive, accessible badge display with tooltips.
+ *
+ * @package ArchivioID
+ * @since   1.1.0
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   Badge Wrapper - Positioning
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-badge-wrapper {
+	position: fixed;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+.archivio-id-badge-wrapper * {
+	pointer-events: auto;
+}
+
+/* Positioned badges */
+.archivio-id-badge-bottom-left {
+	bottom: 20px;
+	left: 20px;
+}
+
+.archivio-id-badge-bottom-right {
+	bottom: 20px;
+	right: 20px;
+}
+
+.archivio-id-badge-top-left {
+	top: 80px; /* Below admin bar if logged in */
+	left: 20px;
+}
+
+.archivio-id-badge-top-right {
+	top: 80px;
+	right: 20px;
+}
+
+/* Inline badges (via shortcode) */
+.archivio-id-badge-inline {
+	position: relative;
+	display: inline-block;
+	margin: 10px 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 782px) {
+	.archivio-id-badge-bottom-left,
+	.archivio-id-badge-bottom-right {
+		bottom: 10px;
+	}
+	
+	.archivio-id-badge-bottom-left,
+	.archivio-id-badge-top-left {
+		left: 10px;
+	}
+	
+	.archivio-id-badge-bottom-right,
+	.archivio-id-badge-top-right {
+		right: 10px;
+	}
+
+	.archivio-id-badge-top-left,
+	.archivio-id-badge-top-right {
+		top: 60px;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Badge - Main Container
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	border-radius: 24px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	user-select: none;
+}
+
+.archivio-id-badge:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.archivio-id-badge-icon {
+	font-size: 18px;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.archivio-id-badge-text {
+	white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Badge Status Colors
+   ═══════════════════════════════════════════════════════════ */
+
+/* Not Signed - Gray */
+.archivio-id-badge-status-not_signed {
+	background: #f0f0f1;
+	color: #50575e;
+	border: 2px solid #8c8f94;
+}
+
+/* Signature Uploaded - Yellow */
+.archivio-id-badge-status-uploaded {
+	background: #fcf8e3;
+	color: #8a6d3b;
+	border: 2px solid #f0ad4e;
+}
+
+/* Verified - Green with Lock Emoji */
+.archivio-id-badge-status-verified {
+	background: #edfaed;
+	color: #0a7537;
+	border: 2px solid #0a7537;
+}
+
+/* Invalid - Red with Stop Sign Emoji */
+.archivio-id-badge-status-invalid {
+	background: #fde8e8;
+	color: #d73a49;
+	border: 2px solid #d73a49;
+}
+
+/* Error - Orange */
+.archivio-id-badge-status-error {
+	background: #fff3cd;
+	color: #856404;
+	border: 2px solid #ffc107;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Tooltip
+   ═══════════════════════════════════════════════════════════ */
+
+.archivio-id-badge-tooltip {
+	position: absolute;
+	bottom: calc(100% + 12px);
+	left: 50%;
+	transform: translateX(-50%) scale(0.95);
+	background: #1d2327;
+	color: #fff;
+	padding: 12px 16px;
+	border-radius: 8px;
+	min-width: 250px;
+	max-width: 320px;
+	font-size: 13px;
+	line-height: 1.5;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+	z-index: 10000;
+	pointer-events: none;
+}
+
+/* Tooltip arrow */
+.archivio-id-badge-tooltip::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 8px solid transparent;
+	border-top-color: #1d2327;
+}
+
+/* Show tooltip on hover */
+.archivio-id-badge-wrapper:hover .archivio-id-badge-tooltip {
+	opacity: 1;
+	visibility: visible;
+	transform: translateX(-50%) scale(1);
+}
+
+/* Tooltip content */
+.archivio-id-badge-tooltip strong {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 14px;
+	color: #fff;
+}
+
+.archivio-id-badge-tooltip p {
+	margin: 0 0 8px 0;
+	color: #e0e0e0;
+}
+
+.archivio-id-badge-tooltip p:last-child {
+	margin-bottom: 0;
+}
+
+.archivio-id-badge-meta {
+	font-size: 11px;
+	color: #a0a0a0;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid #3a3f44;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive Adjustments
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+	.archivio-id-badge {
+		font-size: 12px;
+		padding: 8px 12px;
+		gap: 6px;
+	}
+	
+	.archivio-id-badge-icon {
+		font-size: 16px;
+	}
+	
+	.archivio-id-badge-tooltip {
+		min-width: 200px;
+		max-width: 280px;
+		font-size: 12px;
+		padding: 10px 12px;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Print Styles
+   ═══════════════════════════════════════════════════════════ */
+
+@media print {
+	.archivio-id-badge-wrapper {
+		position: static;
+		display: inline-block;
+		margin: 10px 0;
+		page-break-inside: avoid;
+	}
+	
+	.archivio-id-badge {
+		box-shadow: none;
+		border-width: 1px;
+	}
+	
+	.archivio-id-badge-tooltip {
+		display: none;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════ */
+
+/* Focus styles for keyboard navigation */
+.archivio-id-badge:focus {
+	outline: 2px solid #0073aa;
+	outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.archivio-id-badge,
+	.archivio-id-badge-tooltip {
+		transition: none;
+	}
+	
+	.archivio-id-badge:hover {
+		transform: none;
+	}
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+	.archivio-id-badge {
+		border-width: 3px;
+	}
+	
+	.archivio-id-badge-tooltip {
+		border: 2px solid #fff;
+	}
+}
+/**
+ * ArchivioID — Clickable Lock Icon Styles
+ *
+ * Appended to the existing archivio-id-frontend.css.
+ * Keeps the lock emoji visually minimal while communicating interactivity.
+ *
+ * @package ArchivioID
+ * @since   1.2.0
+ */
+
+/* ── Clickable lock anchor ─────────────────────────────────────────────────── */
+
+.archivio-id-lock-link {
+	display:         inline-block;
+	text-decoration: none;
+	cursor:          pointer;
+	line-height:     1;
+	transition:      opacity 0.15s ease, transform 0.15s ease;
+	/* Inherits the emoji font stack — no explicit font-family needed. */
+}
+
+.archivio-id-lock-link:hover,
+.archivio-id-lock-link:focus {
+	opacity:   0.75;
+	transform: scale( 1.15 );
+	outline:   none;                  /* Visual feedback comes from the scale. */
+}
+
+/* Keyboard focus ring for accessibility — shown only when navigating by key. */
+.archivio-id-lock-link:focus-visible {
+	outline:        2px solid #0073aa;
+	outline-offset: 3px;
+	border-radius:  3px;
+}
+
+/* Subtle pulse while the download is queued. */
+.archivio-id-lock-link.archivio-id-downloading {
+	animation:  archivio-id-lock-pulse 0.8s ease-in-out infinite alternate;
+	cursor:     wait;
+	pointer-events: none;            /* Block additional clicks mid-download. */
+}
+
+@keyframes archivio-id-lock-pulse {
+	from { opacity: 1;    transform: scale( 1 );    }
+	to   { opacity: 0.45; transform: scale( 0.95 ); }
+}
+
+/* Reduced-motion: disable animation, keep cursor feedback. */
+@media ( prefers-reduced-motion: reduce ) {
+	.archivio-id-lock-link {
+		transition: none;
+	}
+
+	.archivio-id-lock-link.archivio-id-downloading {
+		animation: none;
+		opacity:   0.6;
+	}
+}
