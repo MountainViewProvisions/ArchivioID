@@ -74,7 +74,7 @@ Relevant use cases: investigative journalism, security disclosures, legal and co
 ArchivioID will not activate without ArchivioMD ≥ 1.5.0.
 
 ```
-Plugins → Add New → search "ArchivioMD" → Install → Activate
+
 ```
 
 ### 2. Install ArchivioID
