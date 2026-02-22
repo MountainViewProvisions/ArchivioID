@@ -4,7 +4,7 @@
 
 **ArchivioID** is an add-on plugin for [ArchivioMD](https://mountainviewprovisions.com/ArchivioMD) that brings cryptographic author proof to WordPress. Authors sign posts locally with their own GPG key, upload the `.asc` signature file through the post editor, and ArchivioID verifies it, displays a clickable 🔒 badge, and logs every event to a tamper-evident audit trail.
 
-[![Version](https://img.shields.io/badge/version-1.2.0-667eea)](https://github.com/MountainViewProvisions/archivio-id/releases)
+[![Version](https://img.shields.io/badge/version-1.3.1-667eea)](https://github.com/MountainViewProvisions/archivio-id/releases)
 [![License](https://img.shields.io/badge/license-GPL%20v2%2B-blue)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4)](https://php.net)
 [![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-21759B)](https://wordpress.org)
