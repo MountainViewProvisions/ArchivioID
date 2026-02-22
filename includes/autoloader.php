@@ -2,7 +2,7 @@
 /**
  * ArchivioID Vendor Autoloader
  *
- * WordPress-safe autoloader for phpseclib v3.
+ * WordPress-safe autoloader for phpseclib v3 and OpenPGP-PHP.
  * 
  * Design principles:
  * - No fatal errors if vendor directory is missing
@@ -19,56 +19,69 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Load phpseclib v3 autoloader safely.
+ * Load phpseclib v3 and OpenPGP-PHP safely.
  *
- * This function checks for the vendor directory and loads the autoloader
- * only if it exists. It will not cause fatal errors if the library is missing.
+ * IMPORTANT load order:
+ *   1. phpseclib bootstrap
+ *   2. Register phpseclib PSR-4 autoloader  ← must happen BEFORE OpenPGP-PHP files
+ *   3. Require OpenPGP-PHP files            ← these reference phpseclib3\ classes on include
  *
- * @return bool True if autoloader was loaded successfully, false otherwise.
+ * @return bool True if loaded successfully, false otherwise.
  */
 function archivio_id_load_vendor_autoloader() {
 	static $loaded = null;
 
-	// Return cached result
 	if ( $loaded !== null ) {
 		return $loaded;
 	}
 
 	$vendor_dir = ARCHIVIO_ID_PLUGIN_DIR . 'vendor';
-	
+
 	if ( ! file_exists( $vendor_dir . '/phpseclib/phpseclib/bootstrap.php' ) ) {
 		archivio_id_log( 'phpseclib v3 is not installed in vendor directory' );
 		$loaded = false;
 		return false;
 	}
 
-	// Load bootstrap file (handles mbstring checks)
+	// ── STEP 1: phpseclib bootstrap (mbstring polyfills etc.) ────────────────
 	require_once $vendor_dir . '/phpseclib/phpseclib/bootstrap.php';
 
-	// Register PSR-4 autoloader for phpseclib3 namespace
+	// ── STEP 2: Register PSR-4 autoloader for phpseclib3\ FIRST ─────────────
+	// OpenPGP-PHP files reference phpseclib3\ classes at include-time, so the
+	// autoloader MUST be in place before any OpenPGP-PHP file is loaded.
 	spl_autoload_register( function ( $class ) use ( $vendor_dir ) {
-		// Only handle phpseclib3 namespace
-		$prefix = 'phpseclib3\\';
+		$prefix   = 'phpseclib3\\';
 		$base_dir = $vendor_dir . '/phpseclib/phpseclib/';
+		$len      = strlen( $prefix );
 
-		// Does the class use the namespace prefix?
-		$len = strlen( $prefix );
 		if ( strncmp( $prefix, $class, $len ) !== 0 ) {
-			// No, move to the next registered autoloader
 			return;
 		}
 
-		$relative_class = substr( $class, $len );
-
-		// Replace namespace separators with directory separators
-		// and append with .php
-		$file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
-
-		// If the file exists, require it
+		$file = $base_dir . str_replace( '\\', '/', substr( $class, $len ) ) . '.php';
 		if ( file_exists( $file ) ) {
 			require $file;
 		}
-	}, true, false ); // Prepend=true, throw=false
+	}, true, false );
+
+	// ── STEP 3: Load OpenPGP-PHP AFTER autoloader is registered ─────────────
+	// openpgp_crypt_rsa.php and openpgp_crypt_symmetric.php do a top-level
+	// "new phpseclib3\Crypt\RSA()" / include_once at file scope, so phpseclib
+	// must already be autoloadable when these files are require_once'd.
+	$openpgp_files = array(
+		'/openpgp-php/openpgp.php',
+		'/openpgp-php/openpgp_crypt_symmetric.php',
+		'/openpgp-php/openpgp_crypt_rsa.php',
+		'/openpgp-php/openpgp_openssl_wrapper.php',
+		'/openpgp-php/openpgp_mcrypt_wrapper.php',
+		'/openpgp-php/openpgp_sodium.php',
+	);
+	foreach ( $openpgp_files as $openpgp_file ) {
+		$path = $vendor_dir . $openpgp_file;
+		if ( file_exists( $path ) ) {
+			require_once $path;
+		}
+	}
 
 	$loaded = true;
 	return true;
@@ -83,6 +96,5 @@ function archivio_id_has_phpseclib() {
 	if ( ! archivio_id_load_vendor_autoloader() ) {
 		return false;
 	}
-
 	return class_exists( 'phpseclib3\Crypt\PublicKeyLoader' );
 }
