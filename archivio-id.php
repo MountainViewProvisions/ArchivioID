@@ -3,7 +3,7 @@
  * Plugin Name: ArchivioID
  * Plugin URI:  https://mountainviewprovisions.com/ArchivioID
  * Description: OpenPGP detached-signature layer for ArchivioMD. Adds GPG public-key management and per-post signature upload/verification using phpseclib v3 cryptographic backend.
- * Version:     1.2.0
+ * Version:     1.3.0
  * Author:      Mountain View Provisions LLC
  * Author URI:  https://mountainviewprovisions.com
  * Requires at least: 5.0
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Define all plugin-specific constants for paths, URLs, and version tracking
 // ═══════════════════════════════════════════════════════════════════════════
 
-define( 'ARCHIVIO_ID_VERSION',            '1.2.0' );
+define( 'ARCHIVIO_ID_VERSION',            '1.3.0' );
 define( 'ARCHIVIO_ID_PLUGIN_DIR',         plugin_dir_path( __FILE__ ) );
 define( 'ARCHIVIO_ID_PLUGIN_URL',         plugin_dir_url( __FILE__ ) );
 define( 'ARCHIVIO_ID_PLUGIN_FILE',        __FILE__ );
@@ -198,6 +198,11 @@ function archivio_id_load() {
 	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-settings-admin.php';
 	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-audit-log-admin.php';
 	// Note: class-archivio-id-post-meta-box.php is deprecated - using ArchivioID_Post_Integration
+
+	// ── Browser-based signing feature (v1.3.0) ──────────────────────────
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-sig-db.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-signer.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-browser-sign-admin.php';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -296,14 +301,19 @@ final class ArchivioID_Plugin {
 		
 		ArchivioID_DB::maybe_create_tables();
 		ArchivioID_Audit_Log::maybe_create_table();
+		ArchivioID_Browser_Sig_DB::maybe_create_table(); // v1.3.0 browser signatures table
 
 		if ( is_admin() ) {
 			ArchivioID_Admin::get_instance();
 			ArchivioID_Key_Admin::get_instance();
 			ArchivioID_Settings_Admin::get_instance();
 			new ArchivioID_Audit_Log_Admin();
+			ArchivioID_Browser_Sign_Admin::get_instance(); // v1.3.0
 			// Note: ArchivioID_Post_Meta_Box is deprecated - using ArchivioID_Post_Integration instead
 		}
+
+		// Browser signer AJAX handler — needed for both admin and front-end AJAX
+		ArchivioID_Browser_Signer::get_instance();
 		
 		ArchivioID_Post_Integration::get_instance();
 		
@@ -375,7 +385,7 @@ final class ArchivioID_Plugin {
 		$openpgp_path = ARCHIVIO_ID_PLUGIN_DIR . 'vendor/openpgp-php/openpgp.php';
 		if ( ! file_exists( $openpgp_path ) ) {
 			wp_die(
-				esc_html__( 'ArchivioID cannot be activated: OpenPGP-PHP library is not installed. See vendor/openpgp-php/INSTALL.md for instructions.', 'archivio-id' ),
+				esc_html__( 'ArchivioID cannot be activated: OpenPGP-PHP library is not installed. Please contact your administrator.', 'archivio-id' ),
 				esc_html__( 'Activation Error', 'archivio-id' ),
 				array( 'back_link' => true )
 			);
@@ -393,6 +403,11 @@ final class ArchivioID_Plugin {
 			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-audit-log.php';
 		}
 		ArchivioID_Audit_Log::create_table();
+
+		if ( ! class_exists( 'ArchivioID_Browser_Sig_DB' ) ) {
+			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-sig-db.php';
+		}
+		ArchivioID_Browser_Sig_DB::create_table();
 		
 		// ──────────────────────────────────────────────────────────────────
 		// STORE VERSION & INSTALLATION TIMESTAMP

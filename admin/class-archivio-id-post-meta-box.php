@@ -341,7 +341,11 @@ class ArchivioID_Post_Meta_Box {
 	 */
 	public function ajax_get_backend_info() {
 		check_ajax_referer( 'archivio_id_ajax_action', 'nonce' );
-		
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+		}
+
 		$backend = $this->get_backend_info();
 		wp_send_json_success( array( 'backend' => $backend ) );
 	}
