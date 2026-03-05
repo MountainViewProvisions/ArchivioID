@@ -56,10 +56,10 @@ class ArchivioID_Browser_Sign_Admin {
 			return;
 		}
 
-		// OpenPGP.js — loaded from CDN (no server-side key exposure)
+		// OpenPGP.js — bundled locally (WordPress.org prohibits external CDNs)
 		wp_enqueue_script(
 			'openpgpjs',
-			'https://unpkg.com/openpgp@5.11.2/dist/openpgp.min.js',
+			ARCHIVIO_ID_PLUGIN_URL . 'assets/js/openpgp.min.js',
 			array(),
 			'5.11.2',
 			true
@@ -82,18 +82,18 @@ class ArchivioID_Browser_Sign_Admin {
 				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
 				'nonce'     => wp_create_nonce( 'archivio_id_browser_sign' ),
 				'i18n'      => array(
-					'generating'      => __( 'Generating key pair…', 'archivio-id' ),
-					'signing'         => __( 'Signing…', 'archivio-id' ),
-					'uploading'       => __( 'Uploading & verifying…', 'archivio-id' ),
-					'fetchingHash'    => __( 'Fetching post hash…', 'archivio-id' ),
-					'verified'        => __( '✓ Signature verified by server.', 'archivio-id' ),
-					'failed'          => __( '✗ Verification failed.', 'archivio-id' ),
-					'noKey'           => __( 'No private key loaded. Generate or import a key first.', 'archivio-id' ),
-					'noContent'       => __( 'Enter a post ID or a hex hash to sign.', 'archivio-id' ),
-					'noPassphrase'    => __( 'Enter your key passphrase.', 'archivio-id' ),
-					'copied'          => __( 'Copied!', 'archivio-id' ),
-					'keyImported'     => __( 'Private key imported successfully.', 'archivio-id' ),
-					'keyGenerated'    => __( 'New key pair generated.', 'archivio-id' ),
+					'generating'      => esc_html__( 'Generating key pair…', 'archivio-id' ),
+					'signing'         => esc_html__( 'Signing…', 'archivio-id' ),
+					'uploading'       => esc_html__( 'Uploading & verifying…', 'archivio-id' ),
+					'fetchingHash'    => esc_html__( 'Fetching post hash…', 'archivio-id' ),
+					'verified'        => esc_html__( '✓ Signature verified by server.', 'archivio-id' ),
+					'failed'          => esc_html__( '✗ Verification failed.', 'archivio-id' ),
+					'noKey'           => esc_html__( 'No private key loaded. Generate or import a key first.', 'archivio-id' ),
+					'noContent'       => esc_html__( 'Enter a post ID or a hex hash to sign.', 'archivio-id' ),
+					'noPassphrase'    => esc_html__( 'Enter your key passphrase.', 'archivio-id' ),
+					'copied'          => esc_html__( 'Copied!', 'archivio-id' ),
+					'keyImported'     => esc_html__( 'Private key imported successfully.', 'archivio-id' ),
+					'keyGenerated'    => esc_html__( 'New key pair generated.', 'archivio-id' ),
 				),
 			)
 		);

@@ -63,6 +63,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th><label for="abs-gen-pass2"><?php esc_html_e( 'Confirm', 'archivio-id' ); ?></label></th>
 						<td><input type="password" id="abs-gen-pass2" class="regular-text" autocomplete="new-password"></td>
 					</tr>
+					<tr>
+						<th><label for="abs-gen-type"><?php esc_html_e( 'Key Type', 'archivio-id' ); ?></label></th>
+						<td>
+							<select id="abs-gen-type" class="regular-text">
+								<option value="ecc-curve25519" selected><?php esc_html_e( 'Ed25519 / Curve25519 (recommended)', 'archivio-id' ); ?></option>
+								<option value="ecc-p256"><?php esc_html_e( 'ECDSA / P-256 (NIST)', 'archivio-id' ); ?></option>
+								<option value="ecc-p384"><?php esc_html_e( 'ECDSA / P-384 (NIST)', 'archivio-id' ); ?></option>
+								<option value="rsa-2048"><?php esc_html_e( 'RSA 2048', 'archivio-id' ); ?></option>
+								<option value="rsa-4096"><?php esc_html_e( 'RSA 4096 (max compat)', 'archivio-id' ); ?></option>
+							</select>
+							<p class="description"><?php esc_html_e( 'Ed25519 is fastest. RSA 4096 offers broadest compatibility with legacy tools.', 'archivio-id' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="abs-gen-expiry"><?php esc_html_e( 'Expiry', 'archivio-id' ); ?></label></th>
+						<td>
+							<select id="abs-gen-expiry" class="regular-text">
+								<option value="0"><?php esc_html_e( 'Never expires', 'archivio-id' ); ?></option>
+								<option value="365"><?php esc_html_e( '1 year', 'archivio-id' ); ?></option>
+								<option value="730"><?php esc_html_e( '2 years', 'archivio-id' ); ?></option>
+								<option value="1825"><?php esc_html_e( '5 years', 'archivio-id' ); ?></option>
+							</select>
+						</td>
+					</tr>
 				</table>
 				<button type="button" id="abs-btn-generate" class="button button-primary">
 					<?php esc_html_e( 'Generate Key Pair', 'archivio-id' ); ?>

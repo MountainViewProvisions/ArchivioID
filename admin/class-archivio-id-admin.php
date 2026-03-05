@@ -72,11 +72,12 @@ class ArchivioID_Admin {
 		wp_localize_script( 'archivio-id-admin', 'archivioIdAdmin', array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			'nonce'   => wp_create_nonce( 'archivio_id_admin_action' ),
+			'ksNonce' => wp_create_nonce( 'archivio_id_keyserver' ),
 			'strings' => array(
-				'confirmDeleteKey' => __( 'Permanently delete this key? Signatures linked to it will become unverifiable.', 'archivio-id' ),
-				'deleting'         => __( 'Deleting…', 'archivio-id' ),
-				'deleted'          => __( 'Key deleted.', 'archivio-id' ),
-				'error'            => __( 'An error occurred.', 'archivio-id' ),
+				'confirmDeleteKey' => esc_html__( 'Permanently delete this key? Signatures linked to it will become unverifiable.', 'archivio-id' ),
+				'deleting'         => esc_html__( 'Deleting…', 'archivio-id' ),
+				'deleted'          => esc_html__( 'Key deleted.', 'archivio-id' ),
+				'error'            => esc_html__( 'An error occurred.', 'archivio-id' ),
 			),
 		) );
 	}

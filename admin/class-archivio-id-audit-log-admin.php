@@ -107,12 +107,12 @@ class ArchivioID_Audit_Log_Admin {
 		add_settings_error(
 			'archivio_id_audit_log',
 			'logs_deleted',
-			sprintf(
-				/* translators: %d: number of deleted entries */
+			esc_html( sprintf(
+				/* translators: 1: number of deleted entries, 2: number of days */
 				__( 'Deleted %d log entries older than %d days.', 'archivio-id' ),
 				$deleted,
 				$days
-			),
+			) ),
 			'updated'
 		);
 	}

@@ -265,19 +265,19 @@ class ArchivioID_Post_Meta_Box {
 		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
 		
 		if ( ! $post_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid post ID.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid post ID.', 'archivio-id' ) ) );
 		}
 		
 		// Check capabilities
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 		
 		// Rate limiting (30 seconds per user per post)
 		$rate_key = 'archivio_id_verify_' . get_current_user_id() . '_' . $post_id;
 		if ( get_transient( $rate_key ) ) {
 			wp_send_json_error( array( 
-				'message' => __( 'Please wait 30 seconds before verifying again.', 'archivio-id' ),
+				'message' => esc_html__( 'Please wait 30 seconds before verifying again.', 'archivio-id' ),
 				'status' => 'rate_limited'
 			) );
 		}
@@ -299,7 +299,7 @@ class ArchivioID_Post_Meta_Box {
 		} catch ( Throwable $e ) {
 			archivio_id_log( 'AJAX verification exception: ' . $e->getMessage() );
 			wp_send_json_error( array( 
-				'message' => __( 'An internal error occurred. Please try again.', 'archivio-id' ),
+				'message' => esc_html__( 'An internal error occurred. Please try again.', 'archivio-id' ),
 				'status' => 'error'
 			) );
 		}
@@ -315,12 +315,12 @@ class ArchivioID_Post_Meta_Box {
 		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
 		
 		if ( ! $post_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid post ID.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid post ID.', 'archivio-id' ) ) );
 		}
 		
 		// Check capabilities
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 		
 		// Delete signature
@@ -328,11 +328,11 @@ class ArchivioID_Post_Meta_Box {
 		
 		if ( $deleted ) {
 			wp_send_json_success( array( 
-				'message' => __( 'Signature removed successfully.', 'archivio-id' ),
+				'message' => esc_html__( 'Signature removed successfully.', 'archivio-id' ),
 				'status' => 'not_signed'
 			) );
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Could not remove signature.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Could not remove signature.', 'archivio-id' ) ) );
 		}
 	}
 
@@ -343,7 +343,7 @@ class ArchivioID_Post_Meta_Box {
 		check_ajax_referer( 'archivio_id_ajax_action', 'nonce' );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 
 		$backend = $this->get_backend_info();
@@ -388,12 +388,12 @@ class ArchivioID_Post_Meta_Box {
 			'nonce' => wp_create_nonce( 'archivio_id_ajax_action' ),
 			'postId' => get_the_ID(),
 			'strings' => array(
-				'verifying' => __( 'Verifying...', 'archivio-id' ),
-				'verified' => __( 'Verified ✓', 'archivio-id' ),
-				'invalid' => __( 'Invalid ✗', 'archivio-id' ),
-				'error' => __( 'Error', 'archivio-id' ),
-				'confirmDelete' => __( 'Are you sure you want to remove this signature?', 'archivio-id' ),
-				'requestFailed' => __( 'Request failed. Please try again.', 'archivio-id' ),
+				'verifying' => esc_html__( 'Verifying...', 'archivio-id' ),
+				'verified' => esc_html__( 'Verified ✓', 'archivio-id' ),
+				'invalid' => esc_html__( 'Invalid ✗', 'archivio-id' ),
+				'error' => esc_html__( 'Error', 'archivio-id' ),
+				'confirmDelete' => esc_html__( 'Are you sure you want to remove this signature?', 'archivio-id' ),
+				'requestFailed' => esc_html__( 'Request failed. Please try again.', 'archivio-id' ),
 			)
 		) );
 	}

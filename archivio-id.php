@@ -3,12 +3,13 @@
  * Plugin Name: ArchivioID
  * Plugin URI:  https://mountainviewprovisions.com/ArchivioID
  * Description: OpenPGP detached-signature layer for ArchivioMD. Adds GPG public-key management and per-post signature upload/verification using phpseclib v3 cryptographic backend.
- * Version:     1.3.0
+ * Version:     5.1.0
  * Author:      Mountain View Provisions LLC
  * Author URI:  https://mountainviewprovisions.com
- * Requires at least: 5.0
- * Tested up to: 6.7
+ * Requires at least: 6.0
+ * Tested up to: 6.9
  * Requires PHP: 7.4
+ * Requires Plugins: archivio-md
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: archivio-id
@@ -35,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Define all plugin-specific constants for paths, URLs, and version tracking
 // ═══════════════════════════════════════════════════════════════════════════
 
-define( 'ARCHIVIO_ID_VERSION',            '1.3.0' );
+define( 'ARCHIVIO_ID_VERSION',            '5.1.0' );
 define( 'ARCHIVIO_ID_PLUGIN_DIR',         plugin_dir_path( __FILE__ ) );
 define( 'ARCHIVIO_ID_PLUGIN_URL',         plugin_dir_url( __FILE__ ) );
 define( 'ARCHIVIO_ID_PLUGIN_FILE',        __FILE__ );
@@ -121,7 +122,7 @@ function archivio_id_missing_dependency_notice() {
 		// ArchivioMD is installed but version is too old
 		$msg = sprintf(
 			/* translators: 1: plugin name, 2: required version, 3: installed version */
-			esc_html__( 'ArchivioID requires %1$s version %2$s or higher (found %3$s). Update %1$s then reactivate ArchivioID.', 'archivio-id' ),
+			__( 'ArchivioID requires %1$s version %2$s or higher (found %3$s). Update %1$s then reactivate ArchivioID.', 'archivio-id' ),
 			'<strong>ArchivioMD</strong>',
 			'<code>' . esc_html( ARCHIVIO_ID_REQUIRED_PARENT ) . '</code>',
 			'<code>' . esc_html( $current ) . '</code>'
@@ -130,7 +131,7 @@ function archivio_id_missing_dependency_notice() {
 		// ArchivioMD is not installed
 		$msg = sprintf(
 			/* translators: plugin name */
-			esc_html__( 'ArchivioID requires %1$s to be installed and active. Install/activate %1$s, then reactivate ArchivioID.', 'archivio-id' ),
+			__( 'ArchivioID requires %1$s to be installed and active. Install/activate %1$s, then reactivate ArchivioID.', 'archivio-id' ),
 			'<strong>ArchivioMD</strong>'
 		);
 	}
@@ -203,6 +204,26 @@ function archivio_id_load() {
 	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-sig-db.php';
 	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-signer.php';
 	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-browser-sign-admin.php';
+
+	// ── v2.0.0 additions ───────────────────────────────────────────────────
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-multi-sig-store.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-rest-api.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-key-server.php';
+
+	// ── v3.0.0 additions ───────────────────────────────────────────────────
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-cron-verifier.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-bundle-download.php';
+
+	// ── v4.0.0 additions ───────────────────────────────────────────────────
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-expiry-notifier.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-cli.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-bulk-verify.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'admin/class-archivio-id-key-rotation.php';
+
+	// ── v5.1.0 additions ───────────────────────────────────────────────────
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-proof-page.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-algorithm-enforcer.php';
+	require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-threshold-policy.php';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -314,11 +335,27 @@ final class ArchivioID_Plugin {
 
 		// Browser signer AJAX handler — needed for both admin and front-end AJAX
 		ArchivioID_Browser_Signer::get_instance();
+
+		// v2.0.0
+		ArchivioID_REST_API::get_instance();
+		ArchivioID_Key_Server::register_ajax();
+
+		// v3.0.0
+		ArchivioID_Cron_Verifier::get_instance();
+		ArchivioID_Bundle_Download::get_instance();
+
+		// v4.0.0
+		ArchivioID_Expiry_Notifier::get_instance();
+		ArchivioID_Bulk_Verify_Admin::get_instance();
+		ArchivioID_Key_Rotation_Admin::get_instance();
 		
 		ArchivioID_Post_Integration::get_instance();
 		
 		ArchivioID_Frontend_Badge::get_instance();
 		ArchivioID_Signature_Download::get_instance();
+
+		// v5.1.0
+		ArchivioID_Proof_Page::get_instance();
 	}
 
 	/**
@@ -408,12 +445,29 @@ final class ArchivioID_Plugin {
 			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-browser-sig-db.php';
 		}
 		ArchivioID_Browser_Sig_DB::create_table();
+		// v2.0.0+: full schema (includes multi_sigs + key columns)
+		ArchivioID_DB::create_tables();
+
+		// v3.0.0: schedule daily re-verification cron
+		if ( ! class_exists( 'ArchivioID_Cron_Verifier' ) ) {
+			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-cron-verifier.php';
+		}
+		ArchivioID_Cron_Verifier::schedule();
+
+		// v4.0.0: schedule daily key expiry checks
+		if ( ! class_exists( 'ArchivioID_Expiry_Notifier' ) ) {
+			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-expiry-notifier.php';
+		}
+		ArchivioID_Expiry_Notifier::schedule();
 		
 		// ──────────────────────────────────────────────────────────────────
 		// STORE VERSION & INSTALLATION TIMESTAMP
 		// ──────────────────────────────────────────────────────────────────
 		update_option( 'archivio_id_version',      ARCHIVIO_ID_VERSION );
 		update_option( 'archivio_id_installed_at', current_time( 'mysql' ) );
+
+		// v5.1.0: flush rewrite rules so /archivio-id/verify/{id} is live immediately.
+		flush_rewrite_rules();
 	}
 
 	// ═══════════════════════════════════════════════════════════════════════
@@ -434,6 +488,15 @@ final class ArchivioID_Plugin {
 	 * @return void
 	 */
 	public static function on_deactivate() {
+		if ( ! class_exists( 'ArchivioID_Cron_Verifier' ) ) {
+			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-cron-verifier.php';
+		}
+		ArchivioID_Cron_Verifier::unschedule();
+
+		if ( ! class_exists( 'ArchivioID_Expiry_Notifier' ) ) {
+			require_once ARCHIVIO_ID_PLUGIN_DIR . 'includes/class-archivio-id-expiry-notifier.php';
+		}
+		ArchivioID_Expiry_Notifier::unschedule();
 		flush_rewrite_rules();
 	}
 }

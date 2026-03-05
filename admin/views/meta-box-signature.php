@@ -87,7 +87,51 @@ $badge = $badge_map[ $status ] ?? $badge_map['not_signed'];
 				);
 				?>
 			</p>
-			<?php endif; ?>
+
+			<?php
+			// ── Signature packet metadata ─────────────────────────────────────
+			$sig_meta = array();
+			if ( ! empty( $sig_row->sig_metadata ) ) {
+				$decoded = json_decode( $sig_row->sig_metadata, true );
+				if ( is_array( $decoded ) ) {
+					$sig_meta = $decoded;
+				}
+			}
+			if ( ! empty( $sig_meta ) ) : ?>
+			<table class="widefat striped" style="margin:6px 0;font-size:11px;">
+				<tbody>
+				<?php if ( ! empty( $sig_meta['hash_algo'] ) ) : ?>
+				<tr>
+					<td style="width:45%;padding:3px 6px;color:#666;"><?php esc_html_e( 'Digest', 'archivio-id' ); ?></td>
+					<td style="padding:3px 6px;"><code><?php echo esc_html( $sig_meta['hash_algo'] ); ?></code></td>
+				</tr>
+				<?php endif; ?>
+				<?php if ( ! empty( $sig_meta['key_algo'] ) ) : ?>
+				<tr>
+					<td style="padding:3px 6px;color:#666;"><?php esc_html_e( 'Algorithm', 'archivio-id' ); ?></td>
+					<td style="padding:3px 6px;"><code><?php echo esc_html( $sig_meta['key_algo'] ); ?></code></td>
+				</tr>
+				<?php endif; ?>
+				<?php if ( ! empty( $sig_meta['created_at'] ) ) : ?>
+				<tr>
+					<td style="padding:3px 6px;color:#666;"><?php esc_html_e( 'Signed at', 'archivio-id' ); ?></td>
+					<td style="padding:3px 6px;">
+						<?php echo esc_html( wp_date( get_option( 'date_format' ) . ' H:i', (int) $sig_meta['created_at'] ) ); ?>
+						<span style="color:#999;">(packet)</span>
+					</td>
+				</tr>
+				<?php endif; ?>
+				<?php if ( ! empty( $sig_meta['issuer_key_id'] ) ) : ?>
+				<tr>
+					<td style="padding:3px 6px;color:#666;"><?php esc_html_e( 'Issuer key ID', 'archivio-id' ); ?></td>
+					<td style="padding:3px 6px;"><code><?php echo esc_html( strtoupper( $sig_meta['issuer_key_id'] ) ); ?></code></td>
+				</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
+			<?php endif; // sig_meta ?>
+
+			<?php endif; // verified ?>
 
 			<p>
 				<button type="button" id="archivio-id-verify-btn" class="button button-primary">
@@ -96,6 +140,13 @@ $badge = $badge_map[ $status ] ?? $badge_map['not_signed'];
 				<button type="button" id="archivio-id-delete-sig-btn" class="button" style="color:#b32d2e;margin-left:4px;">
 					<?php esc_html_e( 'Remove', 'archivio-id' ); ?>
 				</button>
+				<?php if ( $status === 'verified' ) : ?>
+				<a id="archivio-id-bundle-btn"
+					href="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=archivio_id_download_bundle&post_id=<?php echo (int) $post->ID; ?>&nonce=<?php echo esc_attr( wp_create_nonce( 'archivio_id_download_' . $post->ID ) ); ?>"
+					class="button" style="margin-left:4px;" download>
+					📦 <?php esc_html_e( 'Download Bundle', 'archivio-id' ); ?>
+				</a>
+				<?php endif; ?>
 				<span id="archivio-id-action-spinner" class="spinner" style="float:none;visibility:hidden;"></span>
 			</p>
 			<p id="archivio-id-verify-result" style="display:none;"></p>

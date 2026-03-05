@@ -134,5 +134,139 @@ $show_on_posts = get_option( 'archivio_id_show_on_posts', true );
 				</li>
 			</ol>
 		</div>
+
+		<!-- ── Scheduled Re-Verification (v3.0.0) ─────────────────────────── -->
+		<div class="archivio-id-card" style="max-width:800px;margin-top:20px;">
+			<h2 style="margin-top:0;"><?php esc_html_e( 'Scheduled Re-Verification', 'archivio-id' ); ?></h2>
+			<p class="description">
+				<?php esc_html_e( 'A daily cron job checks all verified signatures against the live post hash. If a post was edited after signing, its badge is automatically flipped to invalid.', 'archivio-id' ); ?>
+			</p>
+
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Enable daily re-verification', 'archivio-id' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="archivio_id_cron_enabled" value="1"
+								<?php checked( get_option( 'archivio_id_cron_enabled', true ) ); ?> />
+							<?php esc_html_e( 'Run daily content-drift check', 'archivio-id' ); ?>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Full crypto re-check', 'archivio-id' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="archivio_id_cron_recheck_crypto" value="1"
+								<?php checked( get_option( 'archivio_id_cron_recheck_crypto', false ) ); ?> />
+							<?php esc_html_e( 'Also re-run cryptographic verification (slower — use only on small sites)', 'archivio-id' ); ?>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Key server lookup', 'archivio-id' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="archivio_id_allow_key_server_lookup" value="1"
+								<?php checked( get_option( 'archivio_id_allow_key_server_lookup', true ) ); ?> />
+							<?php esc_html_e( 'Allow outbound lookups to keys.openpgp.org and WKD (HKP fetch in Key Management page)', 'archivio-id' ); ?>
+						</label>
+					</td>
+				</tr>
+			</table>
+
+			<?php
+			$last_run = get_option( 'archivio_id_last_cron_run', null );
+			$next_ts  = wp_next_scheduled( ArchivioID_Cron_Verifier::HOOK );
+			?>
+			<p>
+				<?php if ( $next_ts ) : ?>
+					<span style="color:#666;">
+						<?php
+						printf(
+							/* translators: date string */
+							esc_html__( 'Next scheduled run: %s', 'archivio-id' ),
+							esc_html( wp_date( get_option( 'date_format' ) . ' H:i', $next_ts ) )
+						);
+						?>
+					</span>
+				<?php else : ?>
+					<span style="color:#d73a49;"><?php esc_html_e( 'Cron not scheduled — deactivate and reactivate the plugin to reschedule.', 'archivio-id' ); ?></span>
+				<?php endif; ?>
+			</p>
+
+			<?php if ( $last_run ) : ?>
+			<p class="description">
+				<?php
+				printf(
+					/* translators: 1: date, 2: checked, 3: invalidated */
+					esc_html__( 'Last run: %1$s — checked %2$d, invalidated %3$d.', 'archivio-id' ),
+					esc_html( $last_run['run_at'] ?? '' ),
+					(int) ( $last_run['checked'] ?? 0 ),
+					(int) ( $last_run['invalidated'] ?? 0 )
+				);
+				?>
+			</p>
+			<?php endif; ?>
+
+			<p>
+				<button type="button" id="archivio-id-cron-run-now" class="button button-secondary">
+					<?php esc_html_e( 'Run Now', 'archivio-id' ); ?>
+				</button>
+				<span id="archivio-id-cron-spinner" class="spinner" style="float:none;visibility:hidden;"></span>
+				<span id="archivio-id-cron-result" style="margin-left:8px;"></span>
+			</p>
+		</div>
+
+
+		<!-- ── Key Expiry Emails (v4.0.0) ──────────────────────────────────── -->
+		<div class="archivio-id-card" style="max-width:800px;margin-top:20px;">
+			<h2 style="margin-top:0;"><?php esc_html_e( 'Key Expiry Notifications', 'archivio-id' ); ?></h2>
+			<p class="description">
+				<?php esc_html_e( 'When a signing key is within 30, 14, or 3 days of expiry, an email is sent to the key owner (added_by user). One email per window per key — no daily spam.', 'archivio-id' ); ?>
+			</p>
+
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Enable expiry emails', 'archivio-id' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="archivio_id_expiry_emails" value="1"
+								<?php checked( get_option( 'archivio_id_expiry_emails', true ) ); ?> />
+							<?php esc_html_e( 'Send warning emails at 30, 14, and 3 days before expiry', 'archivio-id' ); ?>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Recipient', 'archivio-id' ); ?></th>
+					<td>
+						<p class="description">
+							<?php esc_html_e( 'Emails go to the WordPress user recorded as the key\'s added_by, falling back to the site admin email if the user no longer exists.', 'archivio-id' ); ?>
+						</p>
+					</td>
+				</tr>
+			</table>
+
+			<p>
+				<button type="button" id="archivio-id-expiry-check-now" class="button button-secondary">
+					<?php esc_html_e( 'Run Expiry Check Now', 'archivio-id' ); ?>
+				</button>
+				<span id="archivio-id-expiry-spinner" class="spinner" style="float:none;visibility:hidden;"></span>
+				<span id="archivio-id-expiry-result" style="margin-left:8px;"></span>
+			</p>
+		</div>
+
+		<?php
+		// ── v5.1.0: Algorithm Enforcement Floor ──────────────────────────────
+		if ( class_exists( 'ArchivioID_Algorithm_Enforcer' ) ) {
+			require ARCHIVIO_ID_PLUGIN_DIR . 'admin/views/settings-algo-policy.php';
+		}
+
+		// ── v5.1.0: Multi-Signer Threshold ───────────────────────────────────
+		if ( class_exists( 'ArchivioID_Threshold_Policy' ) ) {
+			require ARCHIVIO_ID_PLUGIN_DIR . 'admin/views/settings-threshold.php';
+		}
+		?>
+
 	</form>
 </div>

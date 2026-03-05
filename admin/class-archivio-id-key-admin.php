@@ -35,6 +35,8 @@ class ArchivioID_Key_Admin {
 		add_action( 'wp_ajax_archivio_id_delete_key',     array( $this, 'ajax_delete_key'     ) );
 		add_action( 'wp_ajax_archivio_id_deactivate_key', array( $this, 'ajax_deactivate_key' ) );
 		add_action( 'wp_ajax_archivio_id_activate_key',   array( $this, 'ajax_activate_key'   ) );
+		add_action( 'wp_ajax_archivio_id_revoke_key',     array( $this, 'ajax_revoke_key'     ) );
+		add_action( 'wp_ajax_archivio_id_update_identity_proof', array( $this, 'ajax_update_identity_proof' ) );
 	}
 
 	public function register_submenu() {
@@ -63,13 +65,14 @@ class ArchivioID_Key_Admin {
 		check_ajax_referer( 'archivio_id_admin_action', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 
-		$armored = isset( $_POST['armored_key'] ) ? wp_unslash( $_POST['armored_key'] ) : '';
-		$label   = isset( $_POST['label'] )       ? wp_unslash( $_POST['label'] )       : '';
+		$armored       = isset( $_POST['armored_key'] )       ? wp_unslash( $_POST['armored_key'] )       : '';
+		$label         = isset( $_POST['label'] )             ? wp_unslash( $_POST['label'] )             : '';
+		$identity_url  = isset( $_POST['identity_proof_url'] ) ? wp_unslash( $_POST['identity_proof_url'] ) : '';
 
-		$result = ArchivioID_Key_Manager::add_key( $armored, $label, get_current_user_id() );
+		$result = ArchivioID_Key_Manager::add_key( $armored, $label, get_current_user_id(), $identity_url );
 
 		if ( $result['success'] ) {
 			wp_send_json_success( $result );
@@ -84,19 +87,19 @@ class ArchivioID_Key_Admin {
 		check_ajax_referer( 'archivio_id_admin_action', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 
 		$id = isset( $_POST['key_id'] ) ? absint( $_POST['key_id'] ) : 0;
 		if ( ! $id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid key ID.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid key ID.', 'archivio-id' ) ) );
 		}
 
 		$deleted = ArchivioID_Key_Manager::delete_key( $id );
 		if ( $deleted ) {
-			wp_send_json_success( array( 'message' => __( 'Key deleted.', 'archivio-id' ) ) );
+			wp_send_json_success( array( 'message' => esc_html__( 'Key deleted.', 'archivio-id' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Could not delete key.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Could not delete key.', 'archivio-id' ) ) );
 		}
 	}
 
@@ -105,22 +108,88 @@ class ArchivioID_Key_Admin {
 	public function ajax_deactivate_key() {
 		check_ajax_referer( 'archivio_id_admin_action', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 		$id = isset( $_POST['key_id'] ) ? absint( $_POST['key_id'] ) : 0;
 		ArchivioID_Key_Manager::deactivate_key( $id )
-			? wp_send_json_success( array( 'message' => __( 'Key deactivated.', 'archivio-id' ) ) )
-			: wp_send_json_error(   array( 'message' => __( 'Could not deactivate key.', 'archivio-id' ) ) );
+			? wp_send_json_success( array( 'message' => esc_html__( 'Key deactivated.', 'archivio-id' ) ) )
+			: wp_send_json_error(   array( 'message' => esc_html__( 'Could not deactivate key.', 'archivio-id' ) ) );
 	}
 
 	public function ajax_activate_key() {
 		check_ajax_referer( 'archivio_id_admin_action', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'archivio-id' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
 		}
 		$id = isset( $_POST['key_id'] ) ? absint( $_POST['key_id'] ) : 0;
 		ArchivioID_Key_Manager::activate_key( $id )
-			? wp_send_json_success( array( 'message' => __( 'Key activated.', 'archivio-id' ) ) )
-			: wp_send_json_error(   array( 'message' => __( 'Could not activate key.', 'archivio-id' ) ) );
+			? wp_send_json_success( array( 'message' => esc_html__( 'Key activated.', 'archivio-id' ) ) )
+			: wp_send_json_error(   array( 'message' => esc_html__( 'Could not activate key.', 'archivio-id' ) ) );
 	}
+
+	// ── AJAX: revoke key ──────────────────────────────────────────────────────
+
+	/**
+	 * Import a revocation certificate for a key.
+	 * Marks the key as revoked and inactive.
+	 */
+	public function ajax_revoke_key() {
+		check_ajax_referer( 'archivio_id_key_action', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Insufficient permissions.', 'archivio-id' ) ) );
+		}
+
+		$key_id        = isset( $_POST['key_id'] )        ? absint( $_POST['key_id'] )                                        : 0;
+		$revocation_asc = isset( $_POST['revocation_asc'] ) ? sanitize_textarea_field( wp_unslash( $_POST['revocation_asc'] ) ) : '';
+
+		if ( ! $key_id ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid key ID.', 'archivio-id' ) ) );
+		}
+		if ( empty( $revocation_asc ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Revocation certificate is required.', 'archivio-id' ) ) );
+		}
+
+		$result = ArchivioID_Key_Manager::import_revocation( $key_id, $revocation_asc );
+
+		if ( $result['success'] ) {
+			wp_send_json_success( array( 'message' => $result['message'] ) );
+		} else {
+			wp_send_json_error( array( 'message' => $result['message'] ) );
+		}
+	}
+
+	// ── AJAX: Update identity proof URL ──────────────────────────────────────
+
+	/**
+	 * Update the Keyoxide / Keybase identity proof URL for an existing key.
+	 * Accepting an empty string clears the field.
+	 */
+	public function ajax_update_identity_proof() {
+		check_ajax_referer( 'archivio_id_admin_action', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Permission denied.', 'archivio-id' ) ) );
+		}
+
+		$key_id = isset( $_POST['key_id'] ) ? absint( $_POST['key_id'] ) : 0;
+		$url    = isset( $_POST['identity_proof_url'] ) ? wp_unslash( $_POST['identity_proof_url'] ) : '';
+
+		if ( ! $key_id ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid key ID.', 'archivio-id' ) ) );
+		}
+
+		$ok = ArchivioID_Key_Manager::update_identity_proof( $key_id, $url );
+
+		if ( $ok ) {
+			wp_send_json_success( array(
+				'message' => esc_html__( 'Identity proof URL updated.', 'archivio-id' ),
+				'url'     => ArchivioID_Key_Manager::sanitize_proof_url( $url ),
+			) );
+		} else {
+			wp_send_json_error( array( 'message' => esc_html__( 'Could not update identity proof URL.', 'archivio-id' ) ) );
+		}
+	}
+
+
 }
